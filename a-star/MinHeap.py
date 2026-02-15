@@ -11,6 +11,9 @@ class Node:
         return (self.x, self.y)
 
     def get_cost(self):
+        return self.cost
+
+    def get_total_cost(self):
         return self.cost + self.heuristic
     
     def get_heuristic(self):
@@ -20,7 +23,9 @@ class Node:
         return (self.cost, self.x, self.y, self.heuristic)
 
     def compare_cost(self, node_b):
-        return self.cost - node_b.cost
+        total_cost_a =  self.get_total_cost()
+        total_cost_b = node_b.get_total_cost()
+        return total_cost_a - total_cost_b
 
     def __str__(self):
         return f"{self.cost}"
@@ -52,6 +57,14 @@ class MinHeap():
         else:
             nodes.pop(0) # Remove None
         return node
+    
+    def find_node(self, x, y):
+        nodes = self.nodes
+        for node in nodes:
+            (current_x, current_y) = node.get_position()
+            if ((current_x == x) and (current_y == y)):
+                return True
+        return False
     
     def sift_up(self, node_index):
         nodes = self.nodes
@@ -112,15 +125,15 @@ class MinHeap():
 
     def print(self):
         nodes = self.nodes
-        temp = [ n.get_cost() for n in nodes]
+        temp = [ n.get_total_cost() for n in nodes]
         print(temp)
 
-# n1 = Node(10, 0, 0, 0)
-# n2 = Node(12, 0, 0, 0)
-# n3 = Node(14, 0, 0, 0)
-# n4 = Node(3, 0, 0, 0)
-# n5 = Node(2, 0, 0, 0)
-# n6 = Node(6, 0, 0, 0)
+n1 = Node(10, 3, 7, 0)
+n2 = Node(12, 0, 0, 0)
+n3 = Node(14, 0, 0, 0)
+n4 = Node(3, 0, 0, 0)
+n5 = Node(2, 1, 2, 0)
+n6 = Node(6, 0, 0, 0)
 
 # min_heap = MinHeap()
 # min_heap.push(n1)
@@ -130,6 +143,9 @@ class MinHeap():
 # min_heap.push(n5)
 # min_heap.push(n6)
 # min_heap.print()
+# print(min_heap.find_node(1,2))
+# print(min_heap.find_node(2,1))
+# print(min_heap.find_node(3,7))
 # min_heap.pop()
 # min_heap.print()
 # min_heap.pop()
