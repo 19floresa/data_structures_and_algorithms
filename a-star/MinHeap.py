@@ -82,32 +82,26 @@ class MinHeap():
 
     def sift_down(self, node_index):
         nodes = self.nodes
-        parent = nodes[node_index]
         size = len(nodes)
         while True:
             child_index_left = self.find_left_child_index(node_index)
-            if (child_index_left < size):
-                child_left = nodes[child_index_left]
-                cost_dif = parent.compare_cost(child_left)
-                if (cost_dif > 0):
-                    nodes[node_index] = child_left
-                    nodes[child_index_left] = parent
-                    node_index = child_index_left
-                    continue
-            else:
-                break
-
             child_index_right = self.find_right_child_index(node_index)
+            smallest = node_index
+            if (child_index_left < size):
+                cost_dif = nodes[smallest].compare_cost(nodes[child_index_left])
+                if cost_dif > 0:
+                    smallest = child_index_left
+            
             if (child_index_right < size):
-                child_right = nodes[child_index_right]
-                cost_dif = parent.compare_cost(child_right)
-                if (cost_dif <= 0):
-                    break
-                else:
-                    nodes[node_index] = child_right
-                    nodes[child_index_right] = parent
-                    node_index = child_index_right
-                    continue
+                cost_dif = nodes[smallest].compare_cost(nodes[child_index_right])
+                if cost_dif > 0:
+                    smallest = child_index_right
+
+            if (node_index != smallest):
+                temp = nodes[node_index]
+                nodes[node_index] = nodes[smallest]
+                nodes[smallest] = temp
+                node_index = smallest
             else:
                 break
         return node_index
@@ -121,26 +115,26 @@ class MinHeap():
         temp = [ n.get_cost() for n in nodes]
         print(temp)
 
-n1 = Node(10, 0, 0, 0)
-n2 = Node(12, 0, 0, 0)
-n3 = Node(14, 0, 0, 0)
-n4 = Node(3, 0, 0, 0)
-n5 = Node(2, 0, 0, 0)
-n6 = Node(6, 0, 0, 0)
+# n1 = Node(10, 0, 0, 0)
+# n2 = Node(12, 0, 0, 0)
+# n3 = Node(14, 0, 0, 0)
+# n4 = Node(3, 0, 0, 0)
+# n5 = Node(2, 0, 0, 0)
+# n6 = Node(6, 0, 0, 0)
 
-min_heap = MinHeap()
-min_heap.push(n1)
-min_heap.push(n2)
-min_heap.push(n3)
-min_heap.push(n4)
-min_heap.push(n5)
-min_heap.push(n6)
-min_heap.print()
-min_heap.pop()
-min_heap.print()
-min_heap.pop()
-min_heap.print()
-min_heap.pop()
-min_heap.print()
+# min_heap = MinHeap()
+# min_heap.push(n1)
+# min_heap.push(n2)
+# min_heap.push(n3)
+# min_heap.push(n4)
+# min_heap.push(n5)
+# min_heap.push(n6)
+# min_heap.print()
+# min_heap.pop()
+# min_heap.print()
+# min_heap.pop()
+# min_heap.print()
+# min_heap.pop()
+# min_heap.print()
 # min_heap.pop()
 # min_heap.print()
