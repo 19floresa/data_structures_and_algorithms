@@ -30,7 +30,10 @@ class MinHeap():
         self.nodes = []
 
     def peek(self):
-        pass
+        nodes = self.nodes
+        if (not nodes):
+            return None
+        return nodes[0]
     
     def push(self, node):
         nodes = self.nodes
@@ -38,8 +41,17 @@ class MinHeap():
         index = len(nodes) -1
         self.sift_up(index)
     
-    def remove(self):
-        pass
+    def pop(self):
+        nodes = self.nodes
+        node = nodes[0]
+        nodes[0] = None
+        if (len(nodes) != 1):
+            nodes[0] = nodes.pop() # Replace removed node with last node
+            current_index = 0
+            self.sift_down(current_index)
+        else:
+            nodes.pop(0) # Remove None
+        return node
     
     def sift_up(self, node_index):
         nodes = self.nodes
@@ -68,8 +80,41 @@ class MinHeap():
     def find_right_child_index(self, node_index):
         return (2 * node_index) + 2
 
-    def sift_down(self):
-        pass
+    def sift_down(self, node_index):
+        nodes = self.nodes
+        parent = nodes[node_index]
+        size = len(nodes)
+        while True:
+            child_index_left = self.find_left_child_index(node_index)
+            if (child_index_left < size):
+                child_left = nodes[child_index_left]
+                cost_dif = parent.compare_cost(child_left)
+                if (cost_dif > 0):
+                    nodes[node_index] = child_left
+                    nodes[child_index_left] = parent
+                    node_index = child_index_left
+                    continue
+            else:
+                break
+
+            child_index_right = self.find_right_child_index(node_index)
+            if (child_index_right < size):
+                child_right = nodes[child_index_right]
+                cost_dif = parent.compare_cost(child_right)
+                if (cost_dif <= 0):
+                    break
+                else:
+                    nodes[node_index] = child_right
+                    nodes[child_index_right] = parent
+                    node_index = child_index_right
+                    continue
+            else:
+                break
+        return node_index
+
+
+    def is_empty(self):
+        return (len(self.nodes) == 0)
 
     def print(self):
         nodes = self.nodes
@@ -80,10 +125,22 @@ n1 = Node(10, 0, 0, 0)
 n2 = Node(12, 0, 0, 0)
 n3 = Node(14, 0, 0, 0)
 n4 = Node(3, 0, 0, 0)
+n5 = Node(2, 0, 0, 0)
+n6 = Node(6, 0, 0, 0)
 
 min_heap = MinHeap()
 min_heap.push(n1)
 min_heap.push(n2)
 min_heap.push(n3)
 min_heap.push(n4)
+min_heap.push(n5)
+min_heap.push(n6)
 min_heap.print()
+min_heap.pop()
+min_heap.print()
+min_heap.pop()
+min_heap.print()
+min_heap.pop()
+min_heap.print()
+# min_heap.pop()
+# min_heap.print()
