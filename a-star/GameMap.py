@@ -54,10 +54,10 @@ class GameMap:
     def diagonal_multiplier(self, val):
         return val * 1.5
 
-    def get_game_map_dimensions():
+    def get_game_map_dimensions(self):
         return (self.x, self.y)
 
-    def get_start_position():
+    def get_start_position(self):
         game_map = self.game_map
         for y in range(len(game_map)):
             row = game_map[y]
@@ -67,7 +67,7 @@ class GameMap:
                     return (x, y)
         raise ValueError("Start position was not found: '0'.")
 
-    def get_end_position():
+    def get_end_position(self):
         game_map = self.game_map
         for y in range(len(game_map)):
             row = game_map[y]
@@ -80,6 +80,14 @@ class GameMap:
     def get_size(self):
         (x, y) = self.get_game_map_dimensions()
         return x * y
+
+    def write_shortest_path(self, total_path):
+        game_map = self.game_map
+        for path in total_path:
+            (x, y) = path
+            game_map[y][x] = "*"
+        for line in game_map:
+            print(" ".join(line))
 
 
 
