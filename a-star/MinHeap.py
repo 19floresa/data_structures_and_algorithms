@@ -11,7 +11,7 @@ class Node:
         return (self.x, self.y)
 
     def get_cost(self):
-        return self.cost
+        return self.cost + self.heuristic
     
     def get_heuristic(self):
         return self.heuristic
