@@ -43,7 +43,7 @@ class MinHeap():
     def push(self, node):
         nodes = self.nodes
         nodes.append(node)
-        index = len(nodes) -1
+        index = len(nodes) - 1
         self.sift_up(index)
     
     def pop(self):
@@ -128,12 +128,12 @@ class MinHeap():
         temp = [ n.get_total_cost() for n in nodes]
         print(temp)
 
-n1 = Node(10, 3, 7, 0)
-n2 = Node(12, 0, 0, 0)
-n3 = Node(14, 0, 0, 0)
-n4 = Node(3, 0, 0, 0)
-n5 = Node(2, 1, 2, 0)
-n6 = Node(6, 0, 0, 0)
+# n1 = Node(10, 3, 7, 0)
+# n2 = Node(12, 0, 0, 0)
+# n3 = Node(14, 0, 0, 0)
+# n4 = Node(3, 0, 0, 0)
+# n5 = Node(2, 1, 2, 0)
+# n6 = Node(6, 0, 0, 0)
 
 # min_heap = MinHeap()
 # min_heap.push(n1)

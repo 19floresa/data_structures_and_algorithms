@@ -49,7 +49,7 @@ class GameMap:
     def is_diagonal(self, x, y, x2, y2):
         x_diff = x - x2
         y_diff = y - y2
-        return (x_diff != 0)  and (y_diff != 0)
+        return (x_diff != 0) and (y_diff != 0)
     
     def diagonal_multiplier(self, val):
         return val * 1.5

@@ -13,7 +13,7 @@ class AStar:
         # Euclidian distance between start and end
         x_dif = x - x2
         y_dif = y - y2
-        return math.sqrt((x_dif + x_dif) + (y_dif + y_dif))
+        return math.sqrt((x_dif * x_dif) + (y_dif * y_dif))
 
     def find_g_score_index(self, x, y):
         game_map = self.game_map
@@ -27,18 +27,18 @@ class AStar:
         x = g_score - (y * h)
         return (x, y)
 
-
     def reconstruct_path(self, came_from, current, start):
-        total_path = []
         (x, y) = current.get_position()
         (x2, y2) = start.get_position()
-        while (x != x2) and (y != y2):
+        total_path = [ [ x, y ] ]
+        while not ((x == x2) and (y == y2)):
             idx = self.find_g_score_index(x, y)
             last_pos = came_from[idx]
             (last_x, last_y) = self.decode_g_score_index(last_pos)
             total_path.append([last_x, last_y])
             x = last_x
             y = last_y
+        total_path.pop(-1)
         self.game_map.write_shortest_path(total_path)
 
     def find_neighbors(self, current):
@@ -53,7 +53,7 @@ class AStar:
             new_x = x + x_offset
             new_y = y + y_offset
             if (game_map.is_valid_position(new_x, new_y)):
-                neighbors.append(offset)
+                neighbors.append((new_x, new_y))
         return neighbors
 
     def find_shortest_path(self):
@@ -62,21 +62,19 @@ class AStar:
         game_map = self.game_map
         open_set = self.min_heap
         size = game_map.get_size()
-        start_node = Node(0, x, y, 0)
+        start_node = Node(0, x, y, 0) # dummy node
 
         h = self.heuristic(x, y, x2, y2)
         new_node = Node(0, x, y, h)
-        new_node_g_score = self.find_g_score_index(x, y)
+        new_node_g_score_index = self.find_g_score_index(x, y)
         open_set.push(new_node)
 
         came_from = [ -1 for n in range(size) ]
 
         g_score = [ math.inf for n in range(size) ]
-        g_score[new_node_g_score] = 0
-
+        g_score[new_node_g_score_index] = 0
         f_score = [ math.inf for n in range(size) ]
-        f_score[new_node_g_score] = new_node.get_heuristic()
-
+        f_score[new_node_g_score_index] = new_node.get_heuristic()
         while not open_set.is_empty():
             current = open_set.pop()
             (x, y) = current.get_position()
@@ -108,10 +106,13 @@ class AStar:
                     g_score[neighbor_g_score_index] = tentative_g_score
                     f_score[neighbor_g_score_index] = tentative_g_score + cost_heuristic
                     if not open_set.find_node(neighbor_x, neighbor_y):
-                        new_node = Node(d, neighbor_x, neighbor_y, cost_heuristic)
+                        new_node = Node(tentative_g_score, neighbor_x, neighbor_y, cost_heuristic)
                         open_set.push(new_node)
+        raise ValueError("Failure - Shortest path was not found")
 
-        return None # Failure - Shortest path was not found
-
-a_star = AStar("sample_input")
-a_star.find_shortest_path()
+#a_star = AStar("sample_input")
+#a_star.find_shortest_path()
+# a_star2 = AStar("sample_input2")
+# a_star2.find_shortest_path()
+# a_star3 = AStar("final_input")
+# a_star3.find_shortest_path()
