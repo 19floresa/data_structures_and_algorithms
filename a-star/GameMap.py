@@ -57,5 +57,30 @@ class GameMap:
     def get_game_map_dimensions():
         return (self.x, self.y)
 
+    def get_start_position():
+        game_map = self.game_map
+        for y in range(len(game_map)):
+            row = game_map[y]
+            for x in range(len(row)):
+                col = row[x]
+                if col == "0":
+                    return (x, y)
+        raise ValueError("Start position was not found: '0'.")
+
+    def get_end_position():
+        game_map = self.game_map
+        for y in range(len(game_map)):
+            row = game_map[y]
+            for x in range(len(row)):
+                col = row[x]
+                if col == "2":
+                    return (x, y)
+        raise ValueError("End position was not found: '2'.")
+
+    def get_size(self):
+        (x, y) = self.get_game_map_dimensions()
+        return x * y
+
+
 
 n = GameMap("sample_input")
